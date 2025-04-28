@@ -14,18 +14,22 @@ block main
                             th.text-center Trạng thái
                             th.text-center Hành động
                     tbody
-                        tr 
-                            td.text-center 
-                            td.text-center 
-                               
-                            td 
-                            td  đ
-                            td.text-center 
-                               
-                            td.text-center
-                                a.btn.btn-sm.btn-warning.mr-2(href=``) 
-                                    i.fas.fa-edit
-                                    |  Sửa
-                                a.btn.btn-sm.btn-danger(href=``) 
-                                    i.fas.fa-trash
-                                    |  Xóa
+                        each product,index in products
+                             tr
+                                td.text-center #{index + 1}
+                                td.text-center 
+                                    img(src=product.thumbnail, alt="Product Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                td #{product.title}
+                                td #{product.price} đ
+                                td.text-center 
+                                    if product.status == 'active'
+                                        span.badge.badge-success Đang bán
+                                    else
+                                        span.badge.badge-secondary Ngừng bán
+                                td.text-center
+                                    a.btn.btn-sm.btn-warning.mr-2(href=`/admin/products/edit/${product.id}`) 
+                                        i.fas.fa-edit
+                                        |  Sửa
+                                    a.btn.btn-sm.btn-danger(href=`/admin/products/delete/${product.id}`, onclick="return confirm('Bạn có chắc chắn muốn xóa?')") 
+                                        i.fas.fa-trash
+                                        |  Xóa

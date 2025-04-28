@@ -1,0 +1,130 @@
+header {
+    padding: 10px 0;
+    background-color: #fff; /* Màu nền */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+  }
+  
+  .inner-logo a {
+    display: inline-block;
+  }
+  
+  .inner-logo img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .inner-menu ul {
+    list-style: none;
+    margin: 0 50px 0 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end; /* Căn menu về bên phải */
+    align-items: center;
+    height: 100%;
+  }
+  
+  .inner-menu li {
+    margin-left: 20px;
+  }
+  
+  .inner-menu a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .inner-menu a:hover {
+    color: #007bff; /* Hover màu xanh Bootstrap */
+  }
+  
+  /* Footer */
+  .footer{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+  }
+
+
+  /* Product */
+    /* Định dạng container chính */
+  .container.my-3 {
+    padding: 20px;
+  }
+
+  /* Định dạng box-head */
+  .box-head {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .box-head .inner-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+  }
+
+  /* Định dạng product-item */
+  .product-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Định dạng hình ảnh */
+  .inner-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Định dạng nội dung */
+  .inner-content {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .inner-content .inner-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .inner-price-new {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 5px;
+  }
+
+  .inner-price-old {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+    margin-bottom: 5px;
+  }
+
+  .inner-discount {
+    font-size: 14px;
+    font-weight: bold;
+    color: #dc3545;
+    background-color: #ffe5e5;
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: inline-block;
+  }

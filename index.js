@@ -6,6 +6,10 @@ const express = require('express');
 const app = express()
 const port = process.env.PORT;
 
+// Nhúng system để lấy biến admin ra
+const systemConfig = require("./config/system")
+
+
 // Dung pug
 app.set('views','./views')
 app.set('view engine','pug');
@@ -17,7 +21,8 @@ app.use(express.static('public'))
 const database = require("./config/database")
 database.connect();
 
-
+// Khai báo biến có phạm vi Toàn cục Tất cả các file pug đều nhận được nó
+app.locals.prefixAdmin = systemConfig.prefixAdmin
 
 // ******************ROUTE***************************
 // Nhung route cua client

@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+block main
+    h1 Danh sach san pham
+    .card.mt-4
+        .card-body
+            .table-responsive
+                table.table.table-bordered.table-hover
+                    thead.thead-dark
+                        tr
+                            th.text-center STT
+                            th.text-center Hình ảnh
+                            th.text-center Tiêu đề
+                            th.text-center Giá
+                            th.text-center Trạng thái
+                            th.text-center Hành động
+                    tbody
+                        tr 
+                            td.text-center 
+                            td.text-center 
+                               
+                            td 
+                            td  đ
+                            td.text-center 
+                               
+                            td.text-center
+                                a.btn.btn-sm.btn-warning.mr-2(href=``) 
+                                    i.fas.fa-edit
+                                    |  Sửa
+                                a.btn.btn-sm.btn-danger(href=``) 
+                                    i.fas.fa-trash
+                                    |  Xóa

@@ -1,6 +1,15 @@
 extends ../../layouts/default.pug
 block main
     h1 Danh sach san pham
+    .card.mb-3 
+        .card-header Bộ lọc và Tìm kiếm 
+        .card-body 
+            each item in filterStatus
+                button(
+                    class=`btn btn-sm ml-1 btn-outline-success ${item.class}`
+                    button-status=item.status
+                ) #{item.name}
+              
     .card.mt-4
         .card-body
             .table-responsive

@@ -1,38 +1,21 @@
 // Nhúng model vào để sử dụng
 const Product = require("../../models/product.model")
 
+// Nhúng helpers để sử dụng
+// Hàm Tìm kiếm 
+const filterStatusHelper = require("../../helpers/filterStatus");
+
 // [GET] /admin/products
 // hàm để lấy ra tất cả list products
 module.exports.listProduct = async(req,res)=>{
     // Xử lý logic
     // lấy ra reqest
-    console.log(req.query.status); //lấy dữ liệu trên url http://localhost:3000/admin/products?status=active => lấy ra active
+    // console.log(req.query.status); //lấy dữ liệu trên url http://localhost:3000/admin/products?status=active => lấy ra active
 
 
-    let filterStatus = [
-        {
-            name: 'Tất cả',
-            status: "",
-            class: ""
-        },
-        {
-            name: 'Hoạt động',
-            status: "active",
-            class: ""
-        },
-        {
-            name: 'Ngừng hoạt động',
-            status: "inactive",
-            class: ""
-        },
-    ]
-    if(req.query.status){
-        const index = filterStatus.findIndex(item=>item.status == req.query.status)
-        filterStatus[index].class = "active"
-    }else{
-        const index = filterStatus.findIndex(item=>item.status == "")
-        filterStatus[index].class = "active"
-    }
+//    Đoạn để lấy ra trạng thái
+    const filterStatus = filterStatusHelper(req.query); 
+
     let find = {
         deleted: false
     }

@@ -1,4 +1,4 @@
-console.log('oke');
+// Button status
 const buttonsStatus = document.querySelectorAll("[button-status]");
 if(buttonsStatus.length>0){
     
@@ -24,4 +24,23 @@ if(buttonsStatus.length>0){
         
     })
 }
+// End button status
 
+// Search input
+    const formSeach = document.querySelector('#form-search')
+    let url = new URL(window.location.href)
+    if(formSeach){
+        formSeach.addEventListener("submit",(e)=>{
+            
+            e.preventDefault();
+            const keyword = e.target.elements.keyword.value;
+            if(keyword){
+                url.searchParams.set('keyword',keyword)
+            }else{
+                url.searchParams.delete('keyword')
+            }
+            // Chuyển hướng sang trang tìm kiếm 
+            window.location.href = url.href;
+        })
+    }
+// End search input

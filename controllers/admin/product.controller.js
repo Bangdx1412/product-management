@@ -39,7 +39,13 @@ module.exports.listProduct = async(req,res)=>{
     if( req.query.status){
         find.status =  req.query.status
     }
-    
+    let keyword = "";
+    if(req.query.keyword){
+        keyword = req.query.keyword
+        // dung regex trong js de tim kiem
+        const regex = new RegExp(keyword,'i')
+        find.title = regex;
+    }
     // lấy dữ liệu từ database
     const products = await Product.find(find)
     // console.log(products);
@@ -48,5 +54,6 @@ module.exports.listProduct = async(req,res)=>{
         pageTitle:"Trang list product",
         products: products,
         filterStatus: filterStatus
+        ,keyword: keyword
     })
 }

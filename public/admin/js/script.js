@@ -44,3 +44,19 @@ if(buttonsStatus.length>0){
         })
     }
 // End search input
+// Pagination
+// Muốn lấy thuộc tính tự định nghĩa dùng dấu ngoặc vuông
+    const buttonPagination = document.querySelectorAll("[button-pagination]")
+    if(buttonPagination){
+        let url = new URL(window.location.href);
+        buttonPagination.forEach(button=>{
+            button.addEventListener('click',()=>{
+                const page = button.getAttribute('button-pagination');
+                url.searchParams.set('page',page);
+                window.location.href = url.href
+            })
+        })
+    }
+    
+   
+// End pagination

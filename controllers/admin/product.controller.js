@@ -26,14 +26,38 @@ module.exports.listProduct = async(req,res)=>{
     if(objectSearch.regex){
         find.title = objectSearch.regex;
     }
+    // Phân trang pagination
+    // Công thức: Vị trí bắt đầu lấy = (Trang hiện tại - 1) * Số phần từ mỗi trang
+    let objectPagination = {
+        currentPage: 1,
+        limitItiem: 4
+    }
+    if(req.query.page){
+        objectPagination.currentPage = parseInt(req.query.page);
+    }
+    // Đếm số lượng sản phẩm
+    const countProducts = await Product.countDocuments(find);
+    // Tính ra số trang 
+    const totalPage = Math.ceil(countProducts/objectPagination.limitItiem)
+    // Thêm vào objectPagination một biến tên là totalPage
+    objectPagination.totalPage = totalPage
+    console.log(totalPage);
+    
+    console.log(objectPagination.currentPage);
+    // Thêm skip
+    objectPagination.skip = (objectPagination.currentPage - 1) * objectPagination.limitItiem
+    
+    // Kết thúc phân trang
+
     // lấy dữ liệu từ database
-    const products = await Product.find(find)
+    const products = await Product.find(find).limit(objectPagination.limitItiem).skip(objectPagination.skip)
     // console.log(products);
     
     res.render('admin/pages/products/index',{
         pageTitle:"Trang list product",
         products: products,
-        filterStatus: filterStatus
-        ,keyword: objectSearch.keyword
+        filterStatus: filterStatus,
+        keyword: objectSearch.keyword,
+        pagination: objectPagination
     })
 }

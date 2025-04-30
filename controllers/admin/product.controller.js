@@ -5,6 +5,7 @@ const Product = require("../../models/product.model")
 // Hàm Tìm kiếm 
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require('../../helpers/search')
+const paginationHelper = require('../../helpers/pagination')
 // [GET] /admin/products
 // hàm để lấy ra tất cả list products
 module.exports.listProduct = async(req,res)=>{
@@ -28,25 +29,15 @@ module.exports.listProduct = async(req,res)=>{
     }
     // Phân trang pagination
     // Công thức: Vị trí bắt đầu lấy = (Trang hiện tại - 1) * Số phần từ mỗi trang
-    let objectPagination = {
-        currentPage: 1,
-        limitItiem: 4
-    }
-    if(req.query.page){
-        objectPagination.currentPage = parseInt(req.query.page);
-    }
-    // Đếm số lượng sản phẩm
+     // Đếm số lượng sản phẩm
     const countProducts = await Product.countDocuments(find);
-    // Tính ra số trang 
-    const totalPage = Math.ceil(countProducts/objectPagination.limitItiem)
-    // Thêm vào objectPagination một biến tên là totalPage
-    objectPagination.totalPage = totalPage
-    console.log(totalPage);
-    
-    console.log(objectPagination.currentPage);
-    // Thêm skip
-    objectPagination.skip = (objectPagination.currentPage - 1) * objectPagination.limitItiem
-    
+    let objectPagination = paginationHelper(
+        {
+            currentPage: 1,
+            limitItiem: 4
+        },req.query,countProducts
+    )
+   
     // Kết thúc phân trang
 
     // lấy dữ liệu từ database

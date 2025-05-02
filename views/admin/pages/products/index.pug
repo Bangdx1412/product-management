@@ -57,18 +57,23 @@ block main
                                             data-id=product.id
                                         ) Ngừng bán
                                 td.text-center
-                                    a.btn.btn-sm.btn-warning.mr-2(href=`/admin/products/edit/${product.id}`) 
+                                    button(class="btn btn-warning btn-sm")
                                         i.fas.fa-edit
                                         |  Sửa
-                                    a.btn.btn-sm.btn-danger(href=`/admin/products/delete/${product.id}`, onclick="return confirm('Bạn có chắc chắn muốn xóa?')") 
+                                    button(class="btn btn-danger btn-sm ml-1" data-id=product.id button-delete)
                                         i.fas.fa-trash
                                         |  Xóa
     +pagination(pagination)
+    //- Form update status
     form(
         action="" 
         id="form-change-status" 
         data-path=`${prefixAdmin}/products/change-status`
         method="POST")
 
-
+    //- Form delete product
+    form(action="", method="post"
+        id="form-delete-item" 
+        data-path=`${prefixAdmin}/products/delete`
+    ) 
     script(src="/admin/js/product.js") 

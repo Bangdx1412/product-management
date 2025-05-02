@@ -128,6 +128,5 @@ if(formChangeMulti){
             alert("Vui lòng chọn ít nhất một bản ghi")
         }
         
-    })
-    
+    }) 
 }

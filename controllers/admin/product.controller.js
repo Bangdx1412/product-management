@@ -64,6 +64,7 @@ module.exports.updateStatus = async (req, res) => {
   const id = req.params.id;
 
   await Product.updateOne({ _id: id }, { status: status });
+  req.flash('success', 'Cập nhật trạng thái thành công');
   res.redirect(req.get("Referrer") || "/");
 };
 // Update status nhieu ban ghi

@@ -4,12 +4,16 @@ require("dotenv").config()
 
 const express = require('express');
 const methodOverride = require('method-override')
+const bodyParser = require('body-parser')
 
 const app = express()
 const port = process.env.PORT;
 
 // override with POST having ?_method=DELETE
 app.use(methodOverride('_method'))
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:false}))
+
 // Nhúng system để lấy biến admin ra
 const systemConfig = require("./config/system")
 

@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
+include ../../mixins/form-change-status.pug
 block main
     h1 Danh sach san pham
     .card.mb-3 
@@ -15,10 +16,13 @@ block main
               
     .card.mt-4
         .card-body
+            +form-change-status(`${prefixAdmin}/products/change-multi?_method=PATCH`)
             .table-responsive
-                table.table.table-bordered.table-hover
+                table(class=" table table-bordered table-hover" checkbox-multi)
                     thead.thead-dark
-                        tr
+                        tr  
+                            th 
+                                input(type="checkbox" name="checkall")
                             th.text-center STT
                             th.text-center Hình ảnh
                             th.text-center Tiêu đề
@@ -27,7 +31,9 @@ block main
                             th.text-center Hành động
                     tbody
                         each product,index in products
-                             tr
+                             tr 
+                                td 
+                                    input(type="checkbox" name="id" value=product.id)
                                 td.text-center #{index + 1}
                                 td.text-center 
                                     img(src=product.thumbnail, alt="Product Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")

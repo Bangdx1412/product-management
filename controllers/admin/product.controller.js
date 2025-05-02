@@ -58,7 +58,26 @@ module.exports.updateStatus = async (req,res)=>{
     const id = req.params.id;
 
     await Product.updateOne({_id:id},{status:status});
-
     res.redirect(req.get('Referrer') || '/')
+    
+}
+module.exports.updateStatusProducts = async (req,res)=>{
+    const type = req.body.type;
+    const ids= req.body.ids.split(", ")
+    switch (type) {
+        case "active":
+            await Product.updateMany({_id:{$in:ids}},{status:'active'})
+            res.redirect(req.get('Referrer') || '/')
+            break;
+        case "inactive":
+            await Product.updateMany({_id:{$in:ids}},{status:'inactive'})
+            res.redirect(req.get('Referrer') || '/')
+            break;
+    
+        default:
+            break;
+    }
+    
+    
     
 }

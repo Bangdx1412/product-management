@@ -3,9 +3,13 @@
 require("dotenv").config()
 
 const express = require('express');
+const methodOverride = require('method-override')
+
 const app = express()
 const port = process.env.PORT;
 
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
 // Nhúng system để lấy biến admin ra
 const systemConfig = require("./config/system")
 

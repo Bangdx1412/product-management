@@ -52,3 +52,13 @@ module.exports.listProduct = async(req,res)=>{
         pagination: objectPagination
     })
 }
+module.exports.updateStatus = async (req,res)=>{
+    // console.log(req.params);
+    const status = req.params.status;
+    const id = req.params.id;
+
+    await Product.updateOne({_id:id},{status:status});
+
+    res.redirect(req.get('Referrer') || '/')
+    
+}

@@ -35,9 +35,21 @@ block main
                                 td #{product.price} đ
                                 td.text-center 
                                     if product.status == 'active'
-                                        span.badge.badge-success Đang bán
+                                        a(
+                                            href="javascript:;" 
+                                            class="badge badge-success"
+                                            button-change-status
+                                            data-status=product.status 
+                                            data-id=product.id
+                                        ) Đang bán
                                     else
-                                        span.badge.badge-secondary Ngừng bán
+                                        a(
+                                            href="javascript:;" 
+                                            class="badge badge-secondary "
+                                            button-change-status
+                                            data-status=product.status 
+                                            data-id=product.id
+                                        ) Ngừng bán
                                 td.text-center
                                     a.btn.btn-sm.btn-warning.mr-2(href=`/admin/products/edit/${product.id}`) 
                                         i.fas.fa-edit
@@ -46,3 +58,11 @@ block main
                                         i.fas.fa-trash
                                         |  Xóa
     +pagination(pagination)
+    form(
+        action="" 
+        id="form-change-status" 
+        data-path=`${prefixAdmin}/products/change-status`
+        method="POST")
+
+
+    script(src="/admin/js/product.js") 

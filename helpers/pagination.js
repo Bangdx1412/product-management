@@ -7,9 +7,9 @@ module.exports = (objectPagination,query,countProducts)=>{
     const totalPage = Math.ceil(countProducts/objectPagination.limitItiem)
     // Thêm vào objectPagination một biến tên là totalPage
     objectPagination.totalPage = totalPage
-    console.log(totalPage);
+    // console.log(totalPage);
     
-    console.log(objectPagination.currentPage);
+    // console.log(objectPagination.currentPage);
     // Thêm skip
     objectPagination.skip = (objectPagination.currentPage - 1) * objectPagination.limitItiem
     return objectPagination;

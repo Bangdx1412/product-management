@@ -27,6 +27,7 @@ block main
                             th.text-center Hình ảnh
                             th.text-center Tiêu đề
                             th.text-center Giá
+                            th.text-center Vị trí
                             th.text-center Trạng thái
                             th.text-center Hành động
                     tbody
@@ -39,6 +40,12 @@ block main
                                     img(src=product.thumbnail, alt="Product Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
                                 td #{product.title}
                                 td #{product.price} đ
+                                td 
+                                    input(type="number"
+                                    value=product.position
+                                    min="1"
+                                    name="position"
+                                    )
                                 td.text-center 
                                     if product.status == 'active'
                                         a(

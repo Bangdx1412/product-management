@@ -42,7 +42,9 @@ module.exports.listProduct = async (req, res) => {
   // Kết thúc phân trang
 
   // lấy dữ liệu từ database
+  // sort để sắp xếp theo điều kiện gì đó!
   const products = await Product.find(find)
+    .sort({ position: "desc" })
     .limit(objectPagination.limitItiem)
     .skip(objectPagination.skip);
   // console.log(products);
@@ -78,14 +80,36 @@ module.exports.updateStatusProducts = async (req, res) => {
       res.redirect(req.get("Referrer") || "/");
       break;
     case "delete-all":
-      await Product.updateMany({ _id: { $in: ids } }, 
-        { 
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
           deleted: true,
-          deletedAt: new Date()
-        });
+          deletedAt: new Date(),
+        }
+      );
       res.redirect(req.get("Referrer") || "/");
       break;
+    case "position":
+      for (const item of ids) {
+        // split để cắt chuỗi ví dụ trong chuỗi có - nó sẽ tìm và cắt đúng chỗ đấy biến nó thành mảng
+        // console.log(item);
+        // Sử dụng destructering để phá vỡ cấu trúc
+        [id, position] = item.split("-");
+        // Vì positon trong file model đang để kiểu Number nên phải ép nó về kiểu Number
+        position = parseInt(position);
 
+        // Vì mỗi positon là khác nhau nên sẽ update từng cái vì đã đang trong vòng lặp for
+        await Product.updateOne(
+          { _id: id },
+          {
+            position: position,
+          }
+        );
+        console.log(id);
+        console.log(position);
+      }
+      res.redirect(req.get("Referrer") || "/");
+      break;
     default:
       break;
   }
@@ -95,12 +119,13 @@ module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
   //  Xóa vĩnh viễn
   // await Product.deleteOne({ _id: id });
-  // Xóa mềm sẽ cập nhật lại trường deleted 
-  await Product.updateOne({_id: id},
+  // Xóa mềm sẽ cập nhật lại trường deleted
+  await Product.updateOne(
+    { _id: id },
     {
       deleted: true,
-      deletedAt: new Date()
+      deletedAt: new Date(),
     }
-    )
+  );
   res.redirect(req.get("Referrer") || "/");
 };

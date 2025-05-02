@@ -104,11 +104,21 @@ if(formChangeMulti){
     formChangeMulti.addEventListener('submit',(e)=>{
         // Ngăn không cho chuyển trang
         e.preventDefault();
-        console.log(e);
+        // console.log(e);
         
         const checkboxMulti = document.querySelector('[checkbox-multi]')
         const inputsChecked = checkboxMulti.querySelectorAll("input[name='id']:checked");
-
+      
+      
+        
+        const deleteItems =e.target.elements.type.value;
+        if(deleteItems == "delete-all"){
+           const isConfirm = confirm("Bạn có chắc muốn xóa tất cả các sản phẩm trên?")
+            if(!isConfirm){
+                return;
+            }
+       }
+        
         if(inputsChecked.length>0){
             // mảng chứa các id
             let ids = []

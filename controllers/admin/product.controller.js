@@ -77,6 +77,14 @@ module.exports.updateStatusProducts = async (req, res) => {
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
       res.redirect(req.get("Referrer") || "/");
       break;
+    case "delete-all":
+      await Product.updateMany({ _id: { $in: ids } }, 
+        { 
+          deleted: true,
+          deletedAt: new Date()
+        });
+      res.redirect(req.get("Referrer") || "/");
+      break;
 
     default:
       break;

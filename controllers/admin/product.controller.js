@@ -82,10 +82,17 @@ module.exports.updateStatusProducts = async (req, res) => {
       break;
   }
 };
-// Xoa vinh vien
+// Xoa vinh vien va xoa mem
 module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
-  //   Xoa vinh vien
-  await Product.deleteOne({ _id: id });
+  //  Xóa vĩnh viễn
+  // await Product.deleteOne({ _id: id });
+  // Xóa mềm sẽ cập nhật lại trường deleted 
+  await Product.updateOne({_id: id},
+    {
+      deleted: true,
+      deletedAt: new Date()
+    }
+    )
   res.redirect(req.get("Referrer") || "/");
 };

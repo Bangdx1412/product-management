@@ -8,6 +8,8 @@ router.get('/',controller.listProduct);
 router.patch('/change-status/:status/:id',controller.updateStatus);
 router.patch('/change-multi',controller.updateStatusProducts);
 router.delete('/delete/:id',controller.deleteItem);
+router.get('/create',controller.createProduct);
+router.post('/create',controller.createProductPost);
 
 // export file
 module.exports = router;

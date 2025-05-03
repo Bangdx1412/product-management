@@ -23,7 +23,12 @@ block main
     //- Kết thúc phần bộ lọc và tìm kiếm
     .card.mt-4
         .card-body
-            +form-change-status(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+            .row
+                .col-8
+                    +form-change-status(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                .col-4  
+                    a(href=`${prefixAdmin}/products/create`
+                    class="btn btn-outline-success") + Thêm mới
             .table-responsive
                 table(class=" table table-bordered table-hover" checkbox-multi)
                     thead.thead-dark

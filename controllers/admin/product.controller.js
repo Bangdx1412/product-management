@@ -1,6 +1,7 @@
 // Nhúng model vào để sử dụng
 const Product = require("../../models/product.model");
-
+// nhúng file config
+const systemConfig = require("../../config/system")
 // Nhúng helpers để sử dụng
 // Hàm Tìm kiếm
 const filterStatusHelper = require("../../helpers/filterStatus");
@@ -130,3 +131,33 @@ module.exports.deleteItem = async (req, res) => {
   );
   res.redirect(req.get("Referrer") || "/");
 };
+// Thêm mới sản phẩm
+module.exports.createProduct = async(req,res) =>{
+  res.render("admin/pages/products/create",
+    {pageTitle: 'Thêm mới sản phẩm'}
+  );
+}
+module.exports.createProductPost = async(req,res) =>{
+  // Khi bên người dùng gửi dữ liệu sẽ gửi vào body và để lấy data trong body thì ta cần req.body
+  // console.log(req.body);
+  // Vì trong db có price, discountPercentage, stock, position là kiểu number vì vậy cần ép nó lại về kiểu number
+  req.body.price = parseInt(req.body.price)
+  req.body.discountPercentage = parseInt(req.body.discountPercentage)
+  req.body.stock = parseInt(req.body.stock)
+  // Check xem admin có gửi position k
+  if(req.body.position == ""){
+    // Đếm số lượng sản phẩm trong db để sử lý thằng position
+    const countProducts = await Product.countDocuments();
+    req.body.position = countProducts + 1;
+    console.log(req.body);
+  }else{
+    // ngược lại nếu mà người dùng có truyền vào thì lúc gửi lên sẽ là kiểu string vì vậy cần ép lại thành number
+    req.body.position = parseInt(req.body.position)
+  }
+  // Tạo đối tượng sản phẩm mới nhưng chưa lưu vào db
+  const product = new Product(req.body)
+  // Lưu vào db
+  await product.save();
+  
+  res.redirect(`${systemConfig.prefixAdmin}/products`)
+}

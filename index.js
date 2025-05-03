@@ -34,7 +34,8 @@ app.use(express.static("public"));
 const database = require("./config/database");
 database.connect();
 
-// Khai báo biến có phạm vi Toàn cục Tất cả các file pug đều nhận được nó
+// Khai báo biến có phạm vi Toàn cục Tất cả các file pug đều nhận được nó 
+// Nó chỉ dùng cho file pug thôi
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 // ******************ROUTE***************************

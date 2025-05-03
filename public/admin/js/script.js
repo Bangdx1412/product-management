@@ -168,3 +168,17 @@ closeAlert.addEventListener("click",()=>{
 
 
 // Kết thúc phần xử lý thông báo
+
+// Xử lý phần hiện ảnh
+const uploadImage = document.querySelector("[upload-image]");
+if(uploadImage){
+  const uploadImageInput = document.querySelector('[upload-image-input]');
+  const uploadImagePreview = document.querySelector('[upload-image-preview]')
+  uploadImage.addEventListener("change",(e)=>{
+    const file = e.target.files[0];
+    if(file){
+      uploadImagePreview.src = URL.createObjectURL(file);
+    }
+  })
+}
+// Kết thúc phần xử lý hiện ảnh

@@ -7,6 +7,11 @@ const router = express.Router();
 
 // Nhung file controller
 const controller = require("../../controllers/admin/product.controller");
+
+// Nhúng file validates
+const validates = require("../../validates/admin/product.validate")
+
+// Router
 router.get("/", controller.listProduct);
 router.patch("/change-status/:status/:id", controller.updateStatus);
 router.patch("/change-multi", controller.updateStatusProducts);
@@ -15,6 +20,7 @@ router.get("/create", controller.createProduct);
 router.post(
   "/create",
   upload.single("thumbnail"),
+  validates.createProductPost,
   controller.createProductPost
 );
 

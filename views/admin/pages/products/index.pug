@@ -76,7 +76,7 @@ block main
                                             data-id=product.id
                                         ) Ngừng bán
                                 td.text-center
-                                    button(class="btn btn-warning btn-sm")
+                                    a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning btn-sm")
                                         i.fas.fa-edit
                                         |  Sửa
                                     button(class="btn btn-danger btn-sm ml-1" data-id=product.id button-delete)

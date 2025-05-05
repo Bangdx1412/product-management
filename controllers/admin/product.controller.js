@@ -137,7 +137,8 @@ module.exports.createProduct = async (req, res) => {
 };
 // Tạo mới sản phẩm
 module.exports.createProductPost = async (req, res) => {
-  // Lấy ra thông tin ảnh khi upload
+  try {
+    // Lấy ra thông tin ảnh khi upload
   // console.log(req.file);
 
   // Khi bên người dùng gửi dữ liệu sẽ gửi vào body và để lấy data trong body thì ta cần req.body
@@ -151,20 +152,21 @@ module.exports.createProductPost = async (req, res) => {
     // Đếm số lượng sản phẩm trong db để sử lý thằng position
     const countProducts = await Product.countDocuments();
     req.body.position = countProducts + 1;
-    console.log(req.body);
+    // console.log(req.body);
   } else {
     // ngược lại nếu mà người dùng có truyền vào thì lúc gửi lên sẽ là kiểu string vì vậy cần ép lại thành number
     req.body.position = parseInt(req.body.position);
   }
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
+
   // Tạo đối tượng sản phẩm mới nhưng chưa lưu vào db
   const product = new Product(req.body);
   // Lưu vào db
   await product.save();
 
   res.redirect(`${systemConfig.prefixAdmin}/products`);
+  } catch (error) {
+    res.redirect(req.get("Referrer") || "/");
+  }
 };
 
 module.exports.edit = async (req, res) => {

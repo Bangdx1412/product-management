@@ -24,11 +24,11 @@ app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
 // Dung pug
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 // Nhung file tinh css js image
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 
 // KẾT NỐI DATABASE
 const database = require("./config/database");

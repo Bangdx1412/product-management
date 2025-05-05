@@ -27,5 +27,7 @@ router.get("/edit/:id", controller.edit);
 router.patch("/edit/:id", upload.single("thumbnail"),
 validates.createProductPost, controller.updateProduct);
 
+router.get("/show/:id", controller.show);
+
 // export file
 module.exports = router;

@@ -185,8 +185,7 @@ module.exports.edit = async (req, res) => {
 };
 
 module.exports.updateProduct = async (req, res) => {
-  
-  const id =req.params.id
+  const id = req.params.id;
 
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -196,13 +195,28 @@ module.exports.updateProduct = async (req, res) => {
   if (req.file) {
     req.body.thumbnail = `/uploads/${req.file.filename}`;
   }
- try {
-  await Product.updateOne({_id: id},req.body)
- } catch (error) {
-  
-   res.redirect(req.get("Referrer") || "/");
- }
- res.redirect(req.get("Referrer") || "/");
-  
+  try {
+    await Product.updateOne({ _id: id }, req.body);
+  } catch (error) {
+    res.redirect(req.get("Referrer") || "/");
+  }
+  res.redirect(req.get("Referrer") || "/");
+};
 
+// Xem chi tiết sản phẩm
+module.exports.show = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
+    const product = await Product.findOne(find);
+
+    res.render("admin/pages/products/show", {
+      pageTitle: product.title,
+      product: product,
+    });
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+  }
 };

@@ -1,0 +1,59 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+block main 
+    .container.mt-5
+    h2.mb-4.text-center Chi tiết sản phẩm
+
+    .card
+      .row.no-gutters
+        .col-md-4
+          img.img-fluid.rounded-left(src=product.thumbnail, alt=product.title)
+        .col-md-8
+          .card-body
+            .card-body
+                h4.card-title= product.title
+
+                if product.description
+                    p.card-text.font-italic.text-muted #{product.description}
+                else
+                    p.text-muted Chưa có mô tả cho sản phẩm này.
+
+                hr
+                ul.list-group.list-group-flush
+                    li.list-group-item
+                        strong Giá: 
+                        |  $#{product.price}
+
+                    if product.discountPercentage
+                        li.list-group-item
+                            strong Giảm giá: 
+                            |  #{product.discountPercentage}%
+                    
+                    if product.stock
+                        li.list-group-item
+                            strong Tồn kho: 
+                            |  #{product.stock} sản phẩm
+
+                    if typeof product.position !== 'undefined'
+                        li.list-group-item
+                            strong Vị trí hiển thị: 
+                            |  #{product.position}
+
+                    li.list-group-item
+                        strong Trạng thái: 
+                        span.badge.badge-success.ml-2 #{product.status}
+
+                    li.list-group-item
+                        strong Đã xóa: 
+                        if product.deleted
+                            span.badge.badge-danger.ml-2 Có
+                        else
+                            span.badge.badge-secondary.ml-2 Không
+            .mt-4
+              a.btn.btn-warning(href=`/admin/products/edit/${product._id}`)
+                i.fas.fa-edit.mr-1
+                |  Sửa
+              a.btn.btn-secondary.ml-2(href='/admin/products')
+                i.fas.fa-arrow-left.mr-1
+                |  Quay lại
+    script(src="/admin/js/product.js") 

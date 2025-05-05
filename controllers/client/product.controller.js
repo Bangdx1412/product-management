@@ -4,18 +4,22 @@ const Product = require('../../models/product.model');
 // [GET] /products
 module.exports.index = async (req,res)=>{
     // Get all products
+  try {
     const products = await Product.find({
-        status:"active",
-        deleted:"false"
-    }).sort({ position: "desc" })
-    const productNew = products.map(item=>{
-        item.priceNew = (item.price*(100 - item.discountPercentage)/100).toFixed(0)
-        return item
-    })
-    res.render('client/pages/products/index',{
-        pageTitle: "Trang danh sach san pham",
-        products: productNew
-    })
+      status:"active",
+      deleted:false
+  })
+  const productNew = products.map(item=>{
+      item.priceNew = (item.price*(100 - item.discountPercentage)/100).toFixed(0)
+      return item
+  })
+  res.render('client/pages/products/index',{
+      pageTitle: "Trang danh sach san pham",
+      products: productNew
+  })
+  } catch (error) {
+    res.redirect(`/`);
+  }
 }
 module.exports.detail = async (req,res)=>{
   

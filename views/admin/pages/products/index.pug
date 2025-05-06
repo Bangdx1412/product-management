@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-status.pug
 include ../../mixins/form-change-status.pug
 include ../../mixins/alert.pug
+include ../../mixins/sort.pug
 block main
     h1 Danh sach san pham
     //- Hiển thị thông báo
@@ -21,6 +22,10 @@ block main
                 .col-6 
                     +search(keyword)
     //- Kết thúc phần bộ lọc và tìm kiếm
+    .row
+        .col-4
+           +sort()
+
     .card.mt-4
         .card-body
             .row

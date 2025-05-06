@@ -41,11 +41,17 @@ module.exports.listProduct = async (req, res) => {
   );
 
   // Kết thúc phân trang
-
+  // Tìm kiếm theo sortKey
+  let sort = {};
+  if(req.query.sortKey && req.query.sortValue){
+    sort[req.query.sortKey] = req.query.sortValue
+  }else{
+    sort.position = "desc"
+  }
   // lấy dữ liệu từ database
   // sort để sắp xếp theo điều kiện gì đó!
   const products = await Product.find(find)
-    .sort({ position: "desc" })
+    .sort(sort)
     .limit(objectPagination.limitItiem)
     .skip(objectPagination.skip);
   // console.log(products);

@@ -18,7 +18,7 @@ block main
         h3= product.title
 
         if product.description && product.description.trim() !== ''
-          p.text-muted.font-italic #{product.description}
+          p.text-muted.font-italic !{product.description}
         
         if product.price
           p.mt-3

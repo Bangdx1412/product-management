@@ -1,6 +1,6 @@
 // Su dung file env
 require("dotenv").config();
-
+const path = require("path")
 const express = require("express");
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
@@ -9,7 +9,10 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const app = express();
 const port = process.env.PORT;
-
+// Nhung file tinh css js image
+app.use(express.static(`${__dirname}/public`));
+// Tinymce 
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 // override with POST having ?_method=DELETE
 app.use(methodOverride("_method"));
 // parse application/x-www-form-urlencoded
@@ -27,8 +30,7 @@ app.use(flash());
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
-// Nhung file tinh css js image
-app.use(express.static(`${__dirname}/public`));
+
 
 // KẾT NỐI DATABASE
 const database = require("./config/database");

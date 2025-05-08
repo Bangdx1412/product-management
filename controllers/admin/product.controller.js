@@ -1,22 +1,17 @@
 // Nhúng model vào để sử dụng
 const Product = require("../../models/product.model");
+const ProductCategory = require("../../models/products-category.model");
 // nhúng file config
 const systemConfig = require("../../config/system");
 // Nhúng helpers để sử dụng
-// Hàm Tìm kiếm
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const createTreeHelpers = require("../../helpers/createTree");
 // [GET] /admin/products
 // hàm để lấy ra tất cả list products
 module.exports.listProduct = async (req, res) => {
-  // Xử lý logic
-  // lấy ra reqest
-  // console.log(req.query.status); //lấy dữ liệu trên url http://localhost:3000/admin/products?status=active => lấy ra active
-
-  //    Đoạn để lấy ra trạng thái
   const filterStatus = filterStatusHelper(req.query);
-
   let find = {
     deleted: false,
   };
@@ -39,23 +34,16 @@ module.exports.listProduct = async (req, res) => {
     req.query,
     countProducts
   );
-
-  // Kết thúc phân trang
-  // Tìm kiếm theo sortKey
   let sort = {};
-  if(req.query.sortKey && req.query.sortValue){
-    sort[req.query.sortKey] = req.query.sortValue
-  }else{
-    sort.position = "desc"
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else {
+    sort.position = "desc";
   }
-  // lấy dữ liệu từ database
-  // sort để sắp xếp theo điều kiện gì đó!
   const products = await Product.find(find)
     .sort(sort)
     .limit(objectPagination.limitItiem)
     .skip(objectPagination.skip);
-  // console.log(products);
-
   res.render("admin/pages/products/index", {
     pageTitle: "Trang list product",
     products: products,
@@ -64,9 +52,7 @@ module.exports.listProduct = async (req, res) => {
     pagination: objectPagination,
   });
 };
-// Update status 1 ban ghi
 module.exports.updateStatus = async (req, res) => {
-  // console.log(req.params);
   const status = req.params.status;
   const id = req.params.id;
 
@@ -74,7 +60,6 @@ module.exports.updateStatus = async (req, res) => {
   req.flash("success", "Cập nhật trạng thái thành công");
   res.redirect(req.get("Referrer") || "/");
 };
-// Update status nhieu ban ghi
 module.exports.updateStatusProducts = async (req, res) => {
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
@@ -139,29 +124,34 @@ module.exports.deleteItem = async (req, res) => {
 };
 // Điều hướng sang trang create.pug
 module.exports.createProduct = async (req, res) => {
-  res.render("admin/pages/products/create", { pageTitle: "Thêm mới sản phẩm" });
+  let find = {
+    deleted: false,
+  };
+
+  const category = await ProductCategory.find(find);
+  const newCategory = createTreeHelpers.tree(category);
+  res.render("admin/pages/products/create", { pageTitle: "Thêm mới sản phẩm" , category: newCategory});
 };
 // Tạo mới sản phẩm
 module.exports.createProductPost = async (req, res) => {
   try {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    if (req.body.position == "") {
+      const countProducts = await Product.countDocuments();
+      req.body.position = countProducts + 1;
+      // console.log(req.body);
+    } else {
+      req.body.position = parseInt(req.body.position);
+    }
 
-  req.body.price = parseInt(req.body.price);
-  req.body.discountPercentage = parseInt(req.body.discountPercentage);
-  req.body.stock = parseInt(req.body.stock);
-  if (req.body.position == "") {
-    const countProducts = await Product.countDocuments();
-    req.body.position = countProducts + 1;
-    // console.log(req.body);
-  } else {
-    req.body.position = parseInt(req.body.position);
-  }
+    // Tạo đối tượng sản phẩm mới nhưng chưa lưu vào db
+    const product = new Product(req.body);
+    // Lưu vào db
+    await product.save();
 
-  // Tạo đối tượng sản phẩm mới nhưng chưa lưu vào db
-  const product = new Product(req.body);
-  // Lưu vào db
-  await product.save();
-
-  res.redirect(`${systemConfig.prefixAdmin}/products`);
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
   } catch (error) {
     res.redirect(req.get("Referrer") || "/");
   }

@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-
-mongoose.plugin(slug);
 const roleSchema = new mongoose.Schema(
   {
     title: String, //Ví dụ tiêu đề là: Sản phẩm 1

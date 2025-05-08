@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug
+block main
+    h1(class="mb-4") Nhóm quyền 
+    .card.mb-3
+        .card-header Danh sach
+        .card-body
+            .row
+                .col-8 
+                .col-4  
+                    a(href=`${prefixAdmin}/roles/create`
+                    class="btn btn-outline-success") + Thêm mới
+            table(
+                class="table table-hover table-sm"
+            )
+                thead 
+                    tr
+                        th.text-center STT
+                        th.text-center Nhóm quyền
+                        th.text-center Mô tả ngắn
+                        th.text-center Hành động
+                tbody 
+                    if records.length > 0
+                        each item, index in records 
+                            tr  
+                                td.text-center #{index + 1}
+                                td.text-center #{item.title}
+                                td.text-center #{item.description}
+                                td.text-center
+                                    a(href=`${prefixAdmin}/roles/show/${item.id}` class="btn btn-info btn-sm")
+                                        i.fas.fa-eye
+                                        |  Chi tiết
+                                    a(href=`${prefixAdmin}/roles/edit/${item.id}` class="btn btn-warning btn-sm ml-1 mr-1")
+                                        i.fas.fa-edit
+                                        |  Sửa
+                                    button(class="btn btn-danger btn-sm " data-id=item.id button-delete)
+                                        i.fas.fa-trash
+                                        |  Xóa
+                    else 
+                        tr 
+                            td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo

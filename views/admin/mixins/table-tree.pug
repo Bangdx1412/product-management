@@ -1,0 +1,45 @@
+mixin table-tree(items, level = 1)
+    each item,index in items
+        - const prefix = Array(level+1).join("-- ")
+            tr 
+                td 
+                    input(type="checkbox" name="id" value=item.id)
+                td.text-center #{index + 1}
+                td.text-center 
+                    img(src=item.thumbnail, alt="item Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                td #{prefix}#{item.title}
+                td 
+                    input(type="number"
+                    value=item.position
+                    min="1"
+                    name="position"
+                    )
+                td.text-center 
+                    if item.status == 'active'
+                        a(
+                            href="javascript:;" 
+                            class="badge badge-success"
+                            button-change-status
+                            data-status=item.status 
+                            data-id=item.id
+                        ) Đang bán
+                    else
+                        a(
+                            href="javascript:;" 
+                            class="badge badge-secondary "
+                            button-change-status
+                            data-status=item.status 
+                            data-id=item.id
+                        ) Ngừng bán
+                td.text-center
+                    a(href=`${prefixAdmin}/products-category/show/${item.id}` class="btn btn-info btn-sm")
+                        i.fas.fa-eye
+                        |  Chi tiết
+                    a(href=`${prefixAdmin}/products-category/${item.id}` class="btn btn-warning btn-sm ml-1 mr-1")
+                        i.fas.fa-edit
+                        |  Sửa
+                    button(class="btn btn-danger btn-sm " data-id=item.id button-delete)
+                        i.fas.fa-trash
+                        |  Xóa
+            if item.children && item.children.length > 0
+                +table-tree(item.children,level+1)

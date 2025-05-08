@@ -144,23 +144,15 @@ module.exports.createProduct = async (req, res) => {
 // Tạo mới sản phẩm
 module.exports.createProductPost = async (req, res) => {
   try {
-    // Lấy ra thông tin ảnh khi upload
-  // console.log(req.file);
 
-  // Khi bên người dùng gửi dữ liệu sẽ gửi vào body và để lấy data trong body thì ta cần req.body
-  // console.log(req.body);
-  // Vì trong db có price, discountPercentage, stock, position là kiểu number vì vậy cần ép nó lại về kiểu number
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
-  // Check xem admin có gửi position k
   if (req.body.position == "") {
-    // Đếm số lượng sản phẩm trong db để sử lý thằng position
     const countProducts = await Product.countDocuments();
     req.body.position = countProducts + 1;
     // console.log(req.body);
   } else {
-    // ngược lại nếu mà người dùng có truyền vào thì lúc gửi lên sẽ là kiểu string vì vậy cần ép lại thành number
     req.body.position = parseInt(req.body.position);
   }
 
@@ -199,10 +191,6 @@ module.exports.updateProduct = async (req, res) => {
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
   req.body.position = parseInt(req.body.position);
-
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
   try {
     await Product.updateOne({ _id: id }, req.body);
   } catch (error) {

@@ -52,7 +52,7 @@ block main
                              tr 
                                 td 
                                     input(type="checkbox" name="id" value=product.id)
-                                td.text-center #{index + 1}
+                                td.text-center #{pagination.limitItiem * (pagination.currentPage-1) + (index + 1)} 
                                 td.text-center 
                                     img(src=product.thumbnail, alt="Product Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
                                 td #{product.title}

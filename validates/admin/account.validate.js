@@ -17,3 +17,18 @@ module.exports.createAccountPost = (req,res,next)=>{
   }
   next();
 }
+module.exports.editPatch = (req,res,next)=>{
+     // Validate
+  if (!req.body.fullName) {
+    req.flash("errors", "Vui lòng nhập Họ và Tên");
+    res.redirect(req.get("Referrer") || "/");
+    return;
+  }
+  if (!req.body.email) {
+    req.flash("errors", "Vui lòng nhập email");
+    res.redirect(req.get("Referrer") || "/");
+    return;
+  }
+  
+  next();
+}

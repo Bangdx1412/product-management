@@ -45,11 +45,11 @@ module.exports.listProduct = async (req, res) => {
     .sort(sort)
     .limit(objectPagination.limitItiem)
     .skip(objectPagination.skip);
-  for (const product of products){
+  for (const product of products) {
     const user = await Account.findOne({
-      _id: product.createdBy.account_id
-    })
-    if(user){
+      _id: product.createdBy.account_id,
+    });
+    if (user) {
       product.accountFullname = user.fullName;
     }
   }
@@ -86,7 +86,11 @@ module.exports.updateStatusProducts = async (req, res) => {
         { _id: { $in: ids } },
         {
           deleted: true,
-          deletedAt: new Date(),
+          // deletedAt: new Date(),
+          deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date(),
+          },
         }
       );
       res.redirect(req.get("Referrer") || "/");
@@ -126,7 +130,11 @@ module.exports.deleteItem = async (req, res) => {
     { _id: id },
     {
       deleted: true,
-      deletedAt: new Date(),
+      // deletedAt: new Date(),
+      deletedBy: {
+        account_id: res.locals.user.id,
+        deletedAt: new Date(),
+      },
     }
   );
   res.redirect(req.get("Referrer") || "/");
@@ -158,8 +166,8 @@ module.exports.createProductPost = async (req, res) => {
       req.body.position = parseInt(req.body.position);
     }
     req.body.createdBy = {
-      account_id: res.locals.user.id
-    }
+      account_id: res.locals.user.id,
+    };
     // Tạo đối tượng sản phẩm mới nhưng chưa lưu vào db
     const product = new Product(req.body);
     // Lưu vào db
@@ -177,7 +185,7 @@ module.exports.edit = async (req, res) => {
       deleted: false,
       _id: req.params.id,
     };
-  
+
     const category = await ProductCategory.find({
       deleted: false,
     });
@@ -187,7 +195,7 @@ module.exports.edit = async (req, res) => {
     res.render("admin/pages/products/edit", {
       pageTitle: "Update Product",
       product: product,
-      category:newCategory
+      category: newCategory,
     });
   } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products`);

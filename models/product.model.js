@@ -6,9 +6,9 @@ mongoose.plugin(slug);
 const productSchema = new mongoose.Schema(
   {
     title: String, //Ví dụ tiêu đề là: Sản phẩm 1
-    product_category_id:{
+    product_category_id: {
       type: String,
-      default: ""
+      default: "",
     },
     description: String,
     price: Number,
@@ -26,16 +26,20 @@ const productSchema = new mongoose.Schema(
       account_id: String,
       createdAt: {
         type: Date,
-        default: Date.now
-      }
+        default: Date.now,
+      },
     },
     deleted: {
       type: Boolean,
       default: false,
     },
-    deletedAt: Date,
+    // deletedAt: Date,
+      deletedBy: {
+      account_id: String,
+      deletedAt: Date
+    },
   },
-  
+
   {
     // Thêm createdAt , updatedAt đây là thuộc tính có sẵn của mongoose mục Timestamps
     timestamps: true,

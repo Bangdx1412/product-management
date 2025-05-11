@@ -1,3 +1,9 @@
 extends ../../layouts/default.pug
+include ../../mixins/box-head
+include ../../mixins/productLayout
 block  main 
-    h1 Trang chu
+    .container.my-3
+        .row
+            .col-12
+                +box-head("Sản phẩm nổi bật")
+        +product-grid(productFeatured)

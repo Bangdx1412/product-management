@@ -8,9 +8,20 @@ module.exports.index = async (req, res) => {
     status:"active",
     deleted:false
   }).limit(8)
-  const productNew = productsHelper.priceNewProducts(productFeatured)
+  // Lấy ra sản phẩm mới nhất
+  const productsNew = await Product.find({
+    deleted: false,
+    status:"active"
+  }).limit(8).sort({position:"desc"});
+
+  // Lấy ra giá khuyến mãi của sản phẩm nổi bật
+  const featuredProduct = productsHelper.priceNewProducts(productFeatured)
+
+  // Lấy ra giá khuyến mãi của sản phẩm mới
+  const newProducts = productsHelper.priceNewProducts(productsNew)
   res.render("client/pages/home/index", {
     pageTitle: "Trang chu",
-    productFeatured: productNew
+    productFeatured: featuredProduct,
+    productsNew : newProducts
   });
 };

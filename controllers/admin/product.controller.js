@@ -1,6 +1,7 @@
 // Nhúng model vào để sử dụng
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/products-category.model");
+const Account = require("../../models/account.model");
 // nhúng file config
 const systemConfig = require("../../config/system");
 // Nhúng helpers để sử dụng
@@ -44,6 +45,14 @@ module.exports.listProduct = async (req, res) => {
     .sort(sort)
     .limit(objectPagination.limitItiem)
     .skip(objectPagination.skip);
+  for (const product of products){
+    const user = await Account.findOne({
+      _id: product.createdBy.account_id
+    })
+    if(user){
+      product.accountFullname = user.fullName;
+    }
+  }
   res.render("admin/pages/products/index", {
     pageTitle: "Trang list product",
     products: products,
@@ -148,7 +157,9 @@ module.exports.createProductPost = async (req, res) => {
     } else {
       req.body.position = parseInt(req.body.position);
     }
-
+    req.body.createdBy = {
+      account_id: res.locals.user.id
+    }
     // Tạo đối tượng sản phẩm mới nhưng chưa lưu vào db
     const product = new Product(req.body);
     // Lưu vào db

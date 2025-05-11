@@ -6,6 +6,7 @@ include ../../mixins/form-change-status.pug
 include ../../mixins/form-change-status.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/moment.pug
 block main
     if(role.permissions.includes("products-view"))
         h1 Danh sach san pham
@@ -48,6 +49,7 @@ block main
                                 th.text-center Giá
                                 th.text-center Vị trí
                                 th.text-center Trạng thái
+                                th.text-center Người tạo
                                 th.text-center Hành động
                         tbody
                             each product,index in products
@@ -85,6 +87,10 @@ block main
                                                 ) Ngừng bán
                                         else 
                                             span(class="btn") #{product.status}
+                                    
+                                    td.text-center 
+                                        p #{product.accountFullname}
+                                        +formatDate(product.createdBy.createdAt)
                                     td.text-center
                                         if(role.permissions.includes("products-view"))
                                             a(href=`${prefixAdmin}/products/show/${product.id}` class="btn btn-info btn-sm")
@@ -112,4 +118,3 @@ block main
             data-path=`${prefixAdmin}/products/delete`
         ) 
         script(src="/admin/js/product.js") 
-     

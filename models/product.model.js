@@ -22,12 +22,20 @@ const productSchema = new mongoose.Schema(
       slug: "title", //Ăn theo title
       unique: true,
     },
+    createdBy: {
+      account_id: String,
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    },
     deleted: {
       type: Boolean,
       default: false,
     },
     deletedAt: Date,
   },
+  
   {
     // Thêm createdAt , updatedAt đây là thuộc tính có sẵn của mongoose mục Timestamps
     timestamps: true,

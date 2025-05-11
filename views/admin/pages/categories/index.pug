@@ -1,25 +1,27 @@
 extends ../../layouts/default.pug
 include ../../mixins/table-tree.pug
 block main
-    h1 Danh mục
-    .card.mt-4
-        .card-body
-            .row
-                .col-8
-                .col-4.mb-3
-                    a(href=`${prefixAdmin}/products-category/create`
-                    class="btn btn-outline-success") + Thêm mới
-            .table-responsive
-                table(class=" table table-bordered table-hover" checkbox-multi)
-                    thead.thead-dark
-                        tr  
-                            th 
-                                input(type="checkbox" name="checkall")
-                            th.text-center STT
-                            th.text-center Hình ảnh
-                            th.text-center Tiêu đề
-                            th.text-center Vị trí
-                            th.text-center Trạng thái
-                            th.text-center Hành động
-                    tbody
-                        +table-tree(records)
+    if(role.permissions.includes("products-category-view"))
+        h1 Danh mục
+        .card.mt-4
+            .card-body
+                .row
+                    .col-8
+                    .col-4.mb-3
+                        if(role.permissions.includes("products-category-create"))
+                            a(href=`${prefixAdmin}/products-category/create`
+                            class="btn btn-outline-success") + Thêm mới
+                .table-responsive
+                    table(class=" table table-bordered table-hover" checkbox-multi)
+                        thead.thead-dark
+                            tr  
+                                th 
+                                    input(type="checkbox" name="checkall")
+                                th.text-center STT
+                                th.text-center Hình ảnh
+                                th.text-center Tiêu đề
+                                th.text-center Vị trí
+                                th.text-center Trạng thái
+                                th.text-center Hành động
+                        tbody
+                            +table-tree(records)

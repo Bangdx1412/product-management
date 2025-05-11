@@ -5,23 +5,28 @@
       a(href=`${prefixAdmin}/dashboard`, class="text-white active")
         i(class="fas fa-tachometer-alt")
         |  Dashboard
-    li
-      a(href=`${prefixAdmin}/products-category`, class="text-white")
-        i(class="fas fa-list")
-        |  Danh mục
-    li
-      a(href=`${prefixAdmin}/products`, class="text-white")
-        i(class="fas fa-box")
-        |  Danh sách sản phẩm
-    li
-      a(href=`${prefixAdmin}/roles`, class="text-white")
-        i(class="fas fa-hand-sparkles")
-        |  Nhóm quyền
-    li
-      a(href=`${prefixAdmin}/roles/permissions`, class="text-white")
-        i(class="fas fa-hand-sparkles")
-        |  Phân quyền
-    li
-      a(href=`${prefixAdmin}/accounts`, class="text-white")
-        i(class="fas fa-users")
-        |  Tài khoản
+    if(role.permissions.includes("products-category-view"))
+      li
+        a(href=`${prefixAdmin}/products-category`, class="text-white")
+          i(class="fas fa-list")
+          |  Danh mục
+    if(role.permissions.includes("products-view"))
+      li
+        a(href=`${prefixAdmin}/products`, class="text-white")
+          i(class="fas fa-box")
+          |  Danh sách sản phẩm
+    if(role.permissions.includes("roles-view"))
+      li
+        a(href=`${prefixAdmin}/roles`, class="text-white")
+          i(class="fas fa-hand-sparkles")
+          |  Nhóm quyền
+    if(role.permissions.includes("roles-permision"))
+      li
+        a(href=`${prefixAdmin}/roles/permissions`, class="text-white")
+          i(class="fas fa-hand-sparkles")
+          |  Phân quyền
+    if(role.permissions.includes("accounts-view"))
+      li
+        a(href=`${prefixAdmin}/accounts`, class="text-white")
+          i(class="fas fa-users")
+          |  Tài khoản

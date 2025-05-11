@@ -7,101 +7,109 @@ include ../../mixins/form-change-status.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
 block main
-    h1 Danh sach san pham
-    //- Hiển thị thông báo
-    +alert-success(5000)
-    //- Kết thúc phần hiển thị thông báo
+    if(role.permissions.includes("products-view"))
+        h1 Danh sach san pham
+        //- Hiển thị thông báo
+        +alert-success(5000)
+        //- Kết thúc phần hiển thị thông báo
 
-    //- Bộ lọc và tìm kiếm
-    .card.mb-3 
-        .card-header Bộ lọc và Tìm kiếm 
-        .card-body 
-            .row.col-12
-                .col-6 
-                    +filter-status(filterStatus)
-                .col-6 
-                    +search(keyword)
-    //- Kết thúc phần bộ lọc và tìm kiếm
-    .row
-        .col-4
-           +sort()
+        //- Bộ lọc và tìm kiếm
+        .card.mb-3 
+            .card-header Bộ lọc và Tìm kiếm 
+            .card-body 
+                .row.col-12
+                    .col-6 
+                        +filter-status(filterStatus)
+                    .col-6 
+                        +search(keyword)
+        //- Kết thúc phần bộ lọc và tìm kiếm
+        .row
+            .col-4
+            +sort()
 
-    .card.mt-4
-        .card-body
-            .row
-                .col-8
-                    +form-change-status(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-                .col-4  
-                    a(href=`${prefixAdmin}/products/create`
-                    class="btn btn-outline-success") + Thêm mới
-            .table-responsive
-                table(class=" table table-bordered table-hover" checkbox-multi)
-                    thead.thead-dark
-                        tr  
-                            th 
-                                input(type="checkbox" name="checkall")
-                            th.text-center STT
-                            th.text-center Hình ảnh
-                            th.text-center Tiêu đề
-                            th.text-center Giá
-                            th.text-center Vị trí
-                            th.text-center Trạng thái
-                            th.text-center Hành động
-                    tbody
-                        each product,index in products
-                             tr 
-                                td 
-                                    input(type="checkbox" name="id" value=product.id)
-                                td.text-center #{pagination.limitItiem * (pagination.currentPage-1) + (index + 1)} 
-                                td.text-center 
-                                    img(src=product.thumbnail, alt="Product Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
-                                td #{product.title}
-                                td #{product.price} đ
-                                td 
-                                    input(type="number"
-                                    value=product.position
-                                    min="1"
-                                    name="position"
-                                    )
-                                td.text-center 
-                                    if product.status == 'active'
-                                        a(
-                                            href="javascript:;" 
-                                            class="badge badge-success"
-                                            button-change-status
-                                            data-status=product.status 
-                                            data-id=product.id
-                                        ) Đang bán
-                                    else
-                                        a(
-                                            href="javascript:;" 
-                                            class="badge badge-secondary "
-                                            button-change-status
-                                            data-status=product.status 
-                                            data-id=product.id
-                                        ) Ngừng bán
-                                td.text-center
-                                    a(href=`${prefixAdmin}/products/show/${product.id}` class="btn btn-info btn-sm")
-                                        i.fas.fa-eye
-                                        |  Chi tiết
-                                    a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning btn-sm ml-1 mr-1")
-                                        i.fas.fa-edit
-                                        |  Sửa
-                                    button(class="btn btn-danger btn-sm " data-id=product.id button-delete)
-                                        i.fas.fa-trash
-                                        |  Xóa
-    +pagination(pagination)
-    //- Form update status
-    form(
-        action="" 
-        id="form-change-status" 
-        data-path=`${prefixAdmin}/products/change-status`
-        method="POST")
+        .card.mt-4
+            .card-body
+                .row
+                    .col-8
+                        +form-change-status(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                    .col-4
+                        if(role.permissions.includes("products-create"))
+                            a(href=`${prefixAdmin}/products/create`
+                            class="btn btn-outline-success") + Thêm mới
+                .table-responsive
+                    table(class=" table table-bordered table-hover" checkbox-multi)
+                        thead.thead-dark
+                            tr  
+                                th 
+                                    input(type="checkbox" name="checkall")
+                                th.text-center STT
+                                th.text-center Hình ảnh
+                                th.text-center Tiêu đề
+                                th.text-center Giá
+                                th.text-center Vị trí
+                                th.text-center Trạng thái
+                                th.text-center Hành động
+                        tbody
+                            each product,index in products
+                                tr 
+                                    td 
+                                        input(type="checkbox" name="id" value=product.id)
+                                    td.text-center #{pagination.limitItiem * (pagination.currentPage-1) + (index + 1)} 
+                                    td.text-center 
+                                        img(src=product.thumbnail, alt="Product Image", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                    td #{product.title}
+                                    td #{product.price} đ
+                                    td 
+                                        input(type="number"
+                                        value=product.position
+                                        min="1"
+                                        name="position"
+                                        )
+                                    td.text-center 
+                                        if(role.permissions.includes("products-view"))
+                                            if product.status == 'active'
+                                                a(
+                                                    href="javascript:;" 
+                                                    class="badge badge-success"
+                                                    button-change-status
+                                                    data-status=product.status 
+                                                    data-id=product.id
+                                                ) Đang bán
+                                            else
+                                                a(
+                                                    href="javascript:;" 
+                                                    class="badge badge-secondary "
+                                                    button-change-status
+                                                    data-status=product.status 
+                                                    data-id=product.id
+                                                ) Ngừng bán
+                                        else 
+                                            span(class="btn") #{product.status}
+                                    td.text-center
+                                        if(role.permissions.includes("products-view"))
+                                            a(href=`${prefixAdmin}/products/show/${product.id}` class="btn btn-info btn-sm")
+                                                i.fas.fa-eye
+                                                |  Chi tiết
+                                        if(role.permissions.includes("products-edit"))
+                                            a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning btn-sm ml-1 mr-1")
+                                                i.fas.fa-edit
+                                                |  Sửa
+                                        if(role.permissions.includes("products-delete"))
+                                            button(class="btn btn-danger btn-sm " data-id=product.id button-delete)
+                                                i.fas.fa-trash
+                                                |  Xóa
+        +pagination(pagination)
+        //- Form update status
+        form(
+            action="" 
+            id="form-change-status" 
+            data-path=`${prefixAdmin}/products/change-status`
+            method="POST")
 
-    //- Form delete product
-    form(action="", method="post"
-        id="form-delete-item" 
-        data-path=`${prefixAdmin}/products/delete`
-    ) 
-    script(src="/admin/js/product.js") 
+        //- Form delete product
+        form(action="", method="post"
+            id="form-delete-item" 
+            data-path=`${prefixAdmin}/products/delete`
+        ) 
+        script(src="/admin/js/product.js") 
      

@@ -128,3 +128,77 @@ header {
     border-radius: 12px;
     display: inline-block;
   }
+
+
+  /* Header nav */
+  /* Reset một số style cơ bản */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Menu cấp 1 */
+.inner-menu > ul {
+  display: flex;
+  gap: 20px;
+}
+
+/* Căn chỉnh li */
+.inner-menu li {
+  position: relative;
+}
+
+/* Dropdown cấp 2 trở đi - ẩn mặc định */
+.inner-menu li ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  min-width: 180px;
+}
+
+/* Dropdown cấp 3 trở đi hiển thị bên phải */
+.inner-menu li ul li ul {
+  top: 0;
+  left: 100%;
+}
+
+/* Hiện submenu khi hover */
+.inner-menu li:hover > ul {
+  display: block;
+}
+
+/* Style cho các item */
+.inner-menu li a {
+  display: block;
+  padding: 10px 15px;
+  white-space: nowrap;
+  background: #f9f9f9;
+  transition: background 0.3s;
+}
+
+/* .inner-menu li a:hover {
+  background: #eee;
+}
+.inner-menu li > ul::before {
+  content: '';
+}
+
+.inner-menu li > a::after {
+  content: " ▼";
+  font-size: 10px;
+  padding-left: 5px;
+}
+
+.inner-menu li li > a::after {
+  content: " ▶";
+} */

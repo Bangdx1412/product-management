@@ -15,8 +15,8 @@ const productCategorySchema = new mongoose.Schema(
     status: String,
     position: Number,
     slug: {
-      type: String, //slug sẽ là: san-pham-1
-      slug: "title", //Ăn theo title
+      type: String,
+      slug: "title", 
       unique: true,
     },
     deleted: {

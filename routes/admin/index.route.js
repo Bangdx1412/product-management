@@ -1,19 +1,21 @@
 const systemConfig = require("../../config/system")
 
 // Nhúng route
-const dashboardRoute = require("./dashboard.route")
-const productRoute = require("./product.route")
-const categoryRoute = require("./products-category.route")
-const roleRoute = require("./role.route")
-const accountRoute = require("./account.route")
+const dashboardRoutes = require("./dashboard.route")
+const productRoutes = require("./product.route")
+const categoryRoutes = require("./products-category.route")
+const roleRoutes = require("./role.route")
+const accountRoutes = require("./account.route")
+const authRoutes = require("./auth.route")
 
 module.exports = (app)=>{
     const PATH_ADMIN = systemConfig.prefixAdmin
     // Route
-    app.use(PATH_ADMIN + '/dashboard', dashboardRoute)
-    app.use(PATH_ADMIN + '/products', productRoute)
-    app.use(PATH_ADMIN + '/products-category', categoryRoute)
-    app.use(PATH_ADMIN + '/roles', roleRoute)
-    app.use(PATH_ADMIN + '/accounts', accountRoute)
+    app.use(PATH_ADMIN + '/dashboard', dashboardRoutes)
+    app.use(PATH_ADMIN + '/products', productRoutes)
+    app.use(PATH_ADMIN + '/products-category', categoryRoutes)
+    app.use(PATH_ADMIN + '/roles', roleRoutes)
+    app.use(PATH_ADMIN + '/accounts', accountRoutes)
+    app.use(PATH_ADMIN + '/auth', authRoutes)
 
 }

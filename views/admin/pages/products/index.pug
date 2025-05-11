@@ -50,6 +50,7 @@ block main
                                 th.text-center Vị trí
                                 th.text-center Trạng thái
                                 th.text-center Người tạo
+                                th.text-center Người cập nhật
                                 th.text-center Hành động
                         tbody
                             each product,index in products
@@ -91,6 +92,12 @@ block main
                                     td.text-center 
                                         p #{product.accountFullname}
                                         +formatDate(product.createdBy.createdAt)
+                                    td.text-center 
+                                        - const updatedBy = product.updatedBy.slice(-1)[0]
+                                        if(updatedBy)
+                                            p #{updatedBy.accountFullname}
+                                            p 
+                                                +formatDate(updatedBy.updatedAt)
                                     td.text-center
                                         if(role.permissions.includes("products-view"))
                                             a(href=`${prefixAdmin}/products/show/${product.id}` class="btn btn-info btn-sm")

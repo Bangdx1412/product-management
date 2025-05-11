@@ -46,11 +46,21 @@ module.exports.listProduct = async (req, res) => {
     .limit(objectPagination.limitItiem)
     .skip(objectPagination.skip);
   for (const product of products) {
+    // Lấy ra người tạo
     const user = await Account.findOne({
       _id: product.createdBy.account_id,
     });
     if (user) {
       product.accountFullname = user.fullName;
+    }
+    // Lấy ra người cập nhật gần nhất
+    // Lấy ra người tạo mới nhất
+    const updatedBy = product.updatedBy.slice(-1)[0]; // cắt phần tử từ cuối .[0] sẽ lấy phần tử đầu tiên ở cuối
+    if (updatedBy) {
+      const userUpdated = await Account.findOne({
+        _id: updatedBy.account_id,
+      });
+      updatedBy.accountFullname = userUpdated.fullName;
     }
   }
   res.render("admin/pages/products/index", {
@@ -64,21 +74,44 @@ module.exports.listProduct = async (req, res) => {
 module.exports.updateStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
+  const updatedBy = {
+    account_id: res.locals.user.id,
+    deletedAt: new Date(),
+  };
 
-  await Product.updateOne({ _id: id }, { status: status });
+  await Product.updateOne(
+    { _id: id },
+    {
+      status: status,
+      $push: { updatedBy: updatedBy },
+    }
+  );
   req.flash("success", "Cập nhật trạng thái thành công");
   res.redirect(req.get("Referrer") || "/");
 };
 module.exports.updateStatusProducts = async (req, res) => {
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
+  const updatedBy = {
+    account_id: res.locals.user.id,
+    deletedAt: new Date(),
+  };
   switch (type) {
     case "active":
-      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
+          status: "active",
+          $push: { updatedBy: updatedBy },
+        }
+      );
       res.redirect(req.get("Referrer") || "/");
       break;
     case "inactive":
-      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        { status: "inactive", $push: { updatedBy: updatedBy } }
+      );
       res.redirect(req.get("Referrer") || "/");
       break;
     case "delete-all":
@@ -109,6 +142,7 @@ module.exports.updateStatusProducts = async (req, res) => {
           { _id: id },
           {
             position: position,
+            $push: { updatedBy: updatedBy },
           }
         );
         console.log(id);
@@ -210,7 +244,17 @@ module.exports.updateProduct = async (req, res) => {
   req.body.stock = parseInt(req.body.stock);
   req.body.position = parseInt(req.body.position);
   try {
-    await Product.updateOne({ _id: id }, req.body);
+    const updatedBy = {
+      account_id: res.locals.user.id,
+      deletedAt: new Date(),
+    };
+    await Product.updateOne(
+      { _id: id },
+      {
+        ...req.body,
+        $push: { updatedBy: updatedBy },
+      }
+    );
   } catch (error) {
     res.redirect(req.get("Referrer") || "/");
   }

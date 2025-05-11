@@ -225,7 +225,7 @@ module.exports.edit = async (req, res) => {
     });
     const newCategory = createTreeHelpers.tree(category);
     const product = await Product.findOne(find);
-
+    
     res.render("admin/pages/products/edit", {
       pageTitle: "Update Product",
       product: product,
@@ -254,7 +254,9 @@ module.exports.updateProduct = async (req, res) => {
         ...req.body,
         $push: { updatedBy: updatedBy },
       }
+      
     );
+    req.flash("success","Cập nhật thành công!!")
   } catch (error) {
     res.redirect(req.get("Referrer") || "/");
   }

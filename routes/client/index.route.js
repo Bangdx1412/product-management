@@ -1,5 +1,6 @@
 const productRoute = require("./product.route");
 const homeRoute = require("./home.route");
+const searchRoute = require("./search.route");
 const categoryMiddlware = require("../../middlewares/client/category.middlware");
 module.exports = (app) => {
   // Sử dụng cho tất cả
@@ -9,4 +10,5 @@ module.exports = (app) => {
   app.use("/", homeRoute);
 
   app.use("/products", productRoute);
+  app.use("/search", searchRoute);
 };

@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head
+include ../../mixins/productLayout
+block  main 
+    .container.my-3
+        
+        if(products.length === 0)
+            .row
+                .col-12
+                    p Không tìm thấy sản phẩm nào với từ khóa này.
+        else
+            .row
+                .col-12
+                    p Kết quả tìm kiếm cho từ khóa: #{keyword}
+                    +product-grid(products)

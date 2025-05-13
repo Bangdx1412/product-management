@@ -54,5 +54,5 @@ route(app);
 // *******************AND ROUTE*************************
 
 app.listen(port, () => {
-  console.log(`Run port ${port}`);
+  console.log(`http://localhost:${port}`);
 });

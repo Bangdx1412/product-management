@@ -6,7 +6,13 @@ header.container
       .inner-logo
         a(href="/")
           img(src="/images/logo.webp", width="50%"  alt="Logo")
-    .col-9
+    .col-5
+      form(action="/search", method="get"
+      )
+        div(class="form-group d-flex")
+          input(type="text", name="keyword", class="form-control" value=keyword placeholder="Tìm kiếm sản phẩm")
+          button(type="submit", class="btn btn-primary") Tìm
+    .col-4
       .inner-menu
         ul
           li
@@ -15,19 +21,3 @@ header.container
             -const pathProduct = "/products"
             a(href=`${pathProduct}`) Sản phẩm
               +sub-menu(layoutProductsCategory,pathProduct)
-              
-            //- ul 
-            //-   li 
-            //-     a(href="/products/slug-1") Mục 1
-            //-     ul 
-            //-       li 
-            //-         a(href="/products/slug-1-1") Mục 1-1
-            //-       li 
-            //-         a(href="/products/slug-1-2") Mục 1-2
-            //-         ul 
-            //-           li 
-            //-             a(href="/products/slug-1-2-1") Mục 1-2-1
-            //-           li 
-            //-             a(href="/products/slug-1-2-2") Mục 1-2-2
-            //-   li 
-            //-     a(href="/products/slug-2") Mục 2                   

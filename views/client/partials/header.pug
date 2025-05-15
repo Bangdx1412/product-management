@@ -7,8 +7,7 @@ header.container
         a(href="/")
           img(src="/images/logo.webp", width="50%"  alt="Logo")
     .col-4
-      form(action="/search", method="get"
-      )
+      form(action="/search", method="get" class="form-inline")
         div(class="form-group d-flex")
           input(type="text", name="keyword", class="form-control" value=keyword placeholder="Tìm kiếm sản phẩm")
           button(type="submit", class="btn btn-primary") Tìm
@@ -21,7 +20,9 @@ header.container
             -const pathProduct = "/products"
             a(href=`${pathProduct}`) Sản phẩm
               +sub-menu(layoutProductsCategory,pathProduct)
-    .col-1 
-      .inner-cart.btn
-         a(href="/cart") Cart (#{miniCart.totalQuantity? miniCart.totalQuantity : 0}) 
+          li 
+            a(href="/cart") Cart (#{miniCart.totalQuantity? miniCart.totalQuantity : 0})
+          li
+            a(href="/user/register") Đăng ký
+         
             

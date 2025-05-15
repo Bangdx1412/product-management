@@ -257,3 +257,92 @@ a {
   }
 }
 /* emd show Alert */
+
+
+/* Header chỉnh lại layout */
+header.container {
+  max-width: 100%;
+  width: 100%;
+  padding: 0 20px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+header .row {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+header .col-3,
+header .col-4 {
+  display: flex;
+  align-items: center;
+}
+
+.inner-logo {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.inner-logo img {
+  max-width: 120px;
+  height: auto;
+  display: block;
+}
+
+header form {
+  width: 100%;
+}
+
+header .form-group {
+  width: 100%;
+}
+
+header .form-control {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+header .btn {
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+.inner-menu {
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.inner-menu ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.inner-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 991px) {
+  header .row {
+    flex-wrap: wrap;
+  }
+  header .col-3,
+  header .col-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+  .inner-menu {
+    justify-content: center;
+  }
+  .inner-logo {
+    justify-content: center;
+  }
+}

@@ -23,7 +23,7 @@ module.exports.registerPost = async (req, res) => {
     const user = new User(req.body);
     await user.save();
     req.flash("success", "Đăng ký tài khoản thành công");
-    res.cookie("tookenUser",user.tookenUser)
+    res.cookie("tokenUser",user.tokenUser)
     res.redirect(`/`);
   } catch (error) {
     console.log(error);
@@ -60,7 +60,7 @@ module.exports.loginPost = async (req, res) => {
       res.redirect(req.get("Referrer") || "/");
       return;
     }
-    res.cookie("tookenUser", user.tookenUser); 
+    res.cookie("tokenUser", user.tokenUser); 
     req.flash("success", "Đăng nhập thành công");
     res.redirect(`/`);
   } catch (error) {

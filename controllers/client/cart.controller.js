@@ -1,5 +1,6 @@
 const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
+const productHelper = require("../../helpers/products.js");
 module.exports.add = async (req, res) => {
   const productID = req.params.productId;
   const quantity = parseInt(req.body.quantity);
@@ -38,4 +39,28 @@ module.exports.add = async (req, res) => {
   }
   req.flash("success", "Thêm sản phẩm vào giỏ hàng thành công");
   res.redirect(req.get("Referrer") || "/");
+};
+module.exports.index = async (req, res) => {
+  const cartId = req.cookies.cartId;
+
+  const cart = await Cart.findOne({
+    _id: cartId,
+  });
+  if (cart.products.length > 0) {
+    for (const item of cart.products) {
+      const productId = item.product_id;
+      const productInfo = await Product.findOne({ _id: productId }).select(
+        "title thumbnail slug price discountPercentage"
+      );
+      productInfo.priceNew = productHelper.priceNewProduct(productInfo);
+      item.productInfo = productInfo;
+      item.totalPrice = item.quantity * productInfo.priceNew;
+    }
+  }
+  cart.totalPrice = cart.products.reduce((total, item) => total + item.quantity*item.totalPrice, 0);
+
+  res.render("client/pages/cart/index", {
+    pageTitle: "Giỏ hàng",
+    cartDetail: cart,
+  });
 };

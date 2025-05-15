@@ -6,7 +6,7 @@ header.container
       .inner-logo
         a(href="/")
           img(src="/images/logo.webp", width="50%"  alt="Logo")
-    .col-5
+    .col-4
       form(action="/search", method="get"
       )
         div(class="form-group d-flex")
@@ -21,3 +21,7 @@ header.container
             -const pathProduct = "/products"
             a(href=`${pathProduct}`) Sản phẩm
               +sub-menu(layoutProductsCategory,pathProduct)
+    .col-1 
+      .inner-cart.btn
+         a(href="/cart") Cart (#{miniCart.totalQuantity? miniCart.totalQuantity : 0}) 
+            

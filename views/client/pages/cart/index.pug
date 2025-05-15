@@ -33,7 +33,7 @@ block  main
                                         a(href=`/products/detail/${product.productInfo.slug}`) #{product.productInfo.title}
                                     td #{product.productInfo.priceNew} ₫
                                     td 
-                                        input.form-control(type="number" min="1" item-id=product.product_id value=product.quantity, style="width:70px;")
+                                        input.form-control(type="number" name="quantity" min="1" product-id=product.product_id, value=product.quantity, style="width:70px;")
                                     td #{product.totalPrice} ₫
                                     td 
                                         a(href=`/cart/delete/${product.product_id}` class="btn btn-danger") Xóa
@@ -46,5 +46,6 @@ block  main
             .col-12.text-right
                 a.btn.btn-success(href="/checkout") Thanh toán
                         
-                
+    //-link js
+    script(src="/js/cart.js")     
     

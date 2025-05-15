@@ -57,7 +57,7 @@ module.exports.index = async (req, res) => {
       item.totalPrice = item.quantity * productInfo.priceNew;
     }
   }
-  cart.totalPrice = cart.products.reduce((total, item) => total + item.quantity*item.totalPrice, 0);
+  cart.totalPrice = cart.products.reduce((total, item) => total +item.totalPrice, 0);
 
   res.render("client/pages/cart/index", {
     pageTitle: "Giỏ hàng",
@@ -79,5 +79,25 @@ module.exports.delete = async (req, res) => {
   })
 
   req.flash("success", "Xóa sản phẩm ra khỏi giỏ hàng thành công");
+  res.redirect(req.get("Referrer") || "/");
+};
+module.exports.update = async (req, res) => {
+  const cartId = req.cookies.cartId;
+  const productId = req.params.productId;
+  const quantity = parseInt(req.params.quantity);
+  await Cart.updateOne(
+    {
+      _id: cartId,
+      "products.product_id": productId,
+    },
+    {
+      $set: {
+        "products.$.quantity": quantity,
+      },
+    }
+  );
+
+
+  req.flash("success", "Cập nhật thành công");
   res.redirect(req.get("Referrer") || "/");
 };

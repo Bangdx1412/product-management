@@ -68,3 +68,13 @@ module.exports.loginPost = async (req, res) => {
     res.status(500).json({ message: "Lỗi server" });
   }
 }
+module.exports.logout = async (req, res) => {
+  try {
+   res.clearCookie("tokenUser");
+   req.flash("success", "Đăng xuất thành công");
+    res.redirect(req.get("Referrer") || "/");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+}

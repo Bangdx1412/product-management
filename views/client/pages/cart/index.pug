@@ -36,7 +36,7 @@ block  main
                                         input.form-control(type="number" min="1" item-id=product.product_id value=product.quantity, style="width:70px;")
                                     td #{product.totalPrice} ₫
                                     td 
-                                        a(href=`/cart/delete/${product.productInfo.slug}` class="btn btn-danger") Xóa
+                                        a(href=`/cart/delete/${product.product_id}` class="btn btn-danger") Xóa
                     else
                         tbody
                             tr

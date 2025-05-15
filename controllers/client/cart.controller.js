@@ -64,3 +64,20 @@ module.exports.index = async (req, res) => {
     cartDetail: cart,
   });
 };
+module.exports.delete = async (req, res) => {
+  const cartId = req.cookies.cartId;
+  const productId = req.params.productId;
+  // Xóa khỏi sản phẩm ra giỏ hàng dùng pull
+  await Cart.updateOne({
+    _id: cartId,
+  }, {
+    $pull: {
+      products: {
+        product_id: productId,
+      },
+    },
+  })
+
+  req.flash("success", "Xóa sản phẩm ra khỏi giỏ hàng thành công");
+  res.redirect(req.get("Referrer") || "/");
+};

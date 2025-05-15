@@ -69,7 +69,25 @@ module.exports.order = async (req, res) => {
 };
 module.exports.success = async (req, res) => {
   console.log(req.params.orderId);
+  const orderId = req.params.orderId;
+  const order = await Order.findOne({
+    _id: orderId,
+  });
+  for (const product of order.products) {
+    const productInfo = await Product.findOne({
+      _id: product.product_id,
+    }).select("title thumbnail");
+    product.productInfo = productInfo;
+    product.priceNew = productHelper.priceNewProduct(product);
+    product.totalPrice = product.quantity * product.priceNew;
+  }
+  //   tổng tiền đơn hàng
+  order.totalPrice = order.products.reduce(
+    (sum, item) => sum + item.totalPrice,
+    0
+  );
   res.render("client/pages/checkout/success", {
     pageTitle: "Đặt hàng thành công",
+    order: order,
   });
 };

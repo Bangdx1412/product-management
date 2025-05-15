@@ -10,5 +10,66 @@ block  main
         .row
             .col-12
                 +box-head("Đặt hàng thành công")
+        .row 
+            .col-12 
+                div(class="alert alert-success text-center")
+                    p Cảm ơn bạn đã đặt hàng tại shop của chúng tôi. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
+                    p Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua số điện thoại hoặc email bên dưới.
+                    p Số điện thoại: 0123456789
+                    p Email:
+                    p Chúc bạn một ngày tốt lành!
+        if(order)
+            .row 
+                .col-12 
+                    h4(class="mb-2") Thông tin cá nhân 
+                    table(class="table table-bordered")
+                        tbody
+                            tr  
+                                td Họ và tên
+                                td 
+                                    b #{order.userInfo.fullName}
+                            tr
+                                td Số điện thoại
+                                td 
+                                    b #{order.userInfo.phone}
+                            tr
+                                td Địa chỉ
+                                td 
+                                    b #{order.userInfo.address}
+            .row 
+                .col-12 
+                    h4(class="mb-2") Thông tin đơn hàng 
+                    table(class="table table-bordered")
+                        thead
+                            tr
+                                th STT
+                                th Ảnh
+                                th Tên
+                                th Giá
+                                th Số lượng
+                                th Tổng tiền
+                        if(order.products.length > 0)
+                            tbody
+                                each product, index in order.products
+                                    tr
+                                        td #{index + 1}
+                                        td 
+                                            img(src=product.productInfo.thumbnail, alt=product.productInfo.title, width="60")
+                                        td 
+                                            a(href=`/products/detail/${product.productInfo.slug}`) #{product.productInfo.title}
+                                        td #{product.priceNew} ₫
+                                        td #{product.quantity}
+                                        td #{product.totalPrice} ₫             
+                        if(order.products.length > 0)
+                            tfoot
+                                tr
+                                    td(colspan="5", class="text-right")
+                                        b Tổng đơn hàng:
+                                    td 
+                                        b #{order.totalPrice} ₫
+                        else
+                            tbody
+                                tr
+                                    td(colspan="6", class="text-center") Chưa có sản phẩm nào trong Đặt hàng
         
     

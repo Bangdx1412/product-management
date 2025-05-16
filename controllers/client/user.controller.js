@@ -1,7 +1,8 @@
 const User = require("../../models/user.model");
 const ForgotPassword = require("../../models/forgot-password.model");
 const md5 = require("md5");
-const generateHelper = require("../../helpers/generate.js"); 
+const generateHelper = require("../../helpers/generate.js");
+const sendMailhelper = require("../../helpers/sendMail.js");
 module.exports.register = async (req, res) => {
   try {
     res.render("client/pages/user/register", {
@@ -14,6 +15,7 @@ module.exports.register = async (req, res) => {
 };
 module.exports.registerPost = async (req, res) => {
   try {
+    
     const existEmail = await User.findOne({ email: req.body.email });
     if (existEmail) {
       req.flash("errors", "Email đã tồn tại");
@@ -21,6 +23,8 @@ module.exports.registerPost = async (req, res) => {
       return;
     }
     req.body.password = md5(req.body.password);
+    const tokenUser =  generateHelper.generateRandomString(20)
+    req.body.tokenUser  = tokenUser
     const user = new User(req.body);
     await user.save();
     req.flash("success", "Đăng ký tài khoản thành công");
@@ -104,14 +108,85 @@ module.exports.forgotPasswordPost = async (req, res) => {
     const objectForgotPassword = {
       email: email,
       otp: otp,
-      expireAt: Date.now()
-    }
+      expireAt: Date.now(),
+    };
     // Gui otp
-    const forgotPassword = new ForgotPassword(objectForgotPassword);  
+    const forgotPassword = new ForgotPassword(objectForgotPassword);
     await forgotPassword.save();
     // Gửi mail
+    const subject = "Mã OTP đặt lại mật khẩu";
+    const html = `
+        <h2>Xin chào ${user.fullName}</h2>
+        <p>Mã OTP của bạn là: <strong>${otp}</strong></p>
+        <p>Vui lòng không chia sẻ mã OTP này với bất kỳ ai.</p>
+        <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
+        `;
+    sendMailhelper.sendMail(email,subject,html);
 
-    res.send("oke");
+    res.redirect(`/user/password/otp/?email=${email}`);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+module.exports.otpPassword = async (req, res) => {
+  try {
+    const email = req.query.email;
+    res.render("client/pages/user/otpPassword", {
+      pageTitle: "Nhập mã OTP",
+      email: email,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+module.exports.otpPasswordPost = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const otp = req.body.otp;
+    const result = await ForgotPassword.findOne({
+      email: email,
+      otp: otp,
+    });
+    if (!result) {
+      req.flash("errors", "Mã OTP không hợp lệ");
+      res.redirect(req.get("Referrer") || "/");
+      return;
+    }
+    const user = await User.findOne({ email: email });
+    res.cookie("tokenUser", user.tokenUser);
+
+    res.redirect(`/user/password/reset`);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+module.exports.resetPassword = async (req, res) => {
+  try {
+    res.render("client/pages/user/resetPassword", {
+      pageTitle: "Đặt lại mật khẩu",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+module.exports.resetPasswordPost = async (req, res) => {
+  try {
+    const password = req.body.password;
+    const tokenUser = req.cookies.tokenUser;
+    await User.updateOne(
+      {
+        tokenUser: tokenUser,
+      },
+      {
+        password: md5(password),
+      }
+    );
+    req.flash("success", "Đặt lại mật khẩu thành công");
+    res.redirect(`/`);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Lỗi server" });

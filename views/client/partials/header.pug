@@ -24,7 +24,7 @@ header.container
             a(href="/cart") Cart (#{miniCart.totalQuantity? miniCart.totalQuantity : 0})
           if user
             li
-              a(href="/user") Tài khoản
+              a(href="/user/info") #{user.fullName}
             li
               a(href="/user/logout") Đăng xuất
           else 

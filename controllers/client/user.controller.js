@@ -15,7 +15,6 @@ module.exports.register = async (req, res) => {
 };
 module.exports.registerPost = async (req, res) => {
   try {
-    
     const existEmail = await User.findOne({ email: req.body.email });
     if (existEmail) {
       req.flash("errors", "Email đã tồn tại");
@@ -23,8 +22,8 @@ module.exports.registerPost = async (req, res) => {
       return;
     }
     req.body.password = md5(req.body.password);
-    const tokenUser =  generateHelper.generateRandomString(20)
-    req.body.tokenUser  = tokenUser
+    const tokenUser = generateHelper.generateRandomString(20);
+    req.body.tokenUser = tokenUser;
     const user = new User(req.body);
     await user.save();
     req.flash("success", "Đăng ký tài khoản thành công");
@@ -121,7 +120,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
         <p>Vui lòng không chia sẻ mã OTP này với bất kỳ ai.</p>
         <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
         `;
-    sendMailhelper.sendMail(email,subject,html);
+    sendMailhelper.sendMail(email, subject, html);
 
     res.redirect(`/user/password/otp/?email=${email}`);
   } catch (error) {
@@ -187,6 +186,17 @@ module.exports.resetPasswordPost = async (req, res) => {
     );
     req.flash("success", "Đặt lại mật khẩu thành công");
     res.redirect(`/`);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+module.exports.info = async (req, res) => {
+  try {
+    
+    res.render("client/pages/user/info", {
+      pageTitle: "Thông tin cá nhân",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Lỗi server" });

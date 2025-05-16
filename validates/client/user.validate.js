@@ -31,3 +31,13 @@ module.exports.loginPost = (req,res,next)=>{
   }
   next();
 }
+module.exports.forgotPasswordPost = (req,res,next)=>{
+     // Validate
+  if (!req.body.email) {
+    req.flash("errors", "Vui lòng nhập email");
+    res.redirect(req.get("Referrer") || "/");
+    return;
+  }
+ 
+  next();
+}
